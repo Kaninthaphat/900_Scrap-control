@@ -1,0 +1,89 @@
+<?page title="SUS Evaluation" contentType="text/html;charset=UTF-8"?>
+<zk>
+		<borderlayout vflex="1" hflex="1"
+		apply="org.zkoss.bind.BindComposer" 
+		viewModel="@id('vm') @init('view.view_907_scap_check')"
+		validationMessages="@id('vmsgs')">
+		
+		<north>
+		 	<toolbar>
+			<hlayout spacing="10px">						               	            				      
+		    	 <toolbarbutton image="/images/1496235523_barcode-2d.png"/>	
+		    	 	     
+		         <toolbarbutton label="SCAN QRCODE" style="color:#666666;font-size:14px;" disabled="false"/>	
+		         
+		         <textbox width="100px" value="@bind(vm.scan_qr)" onOK="@command('load_scrap')" style="color:#666666;font-size:14px;"/>	
+		         
+		         <toolbarbutton label="Total Weight" style="color:#666666;font-size:14px;" disabled="false"/>
+		         
+		         <textbox width="100px" value="@bind(vm.total_weight)" readonly="true" style="text-align:right;color:#333333;font-size:14px;"/>
+		         
+		         <toolbarbutton label="Kgs." style="color:#666666;font-size:14px;" disabled="false"/>
+		         		         		      		         
+		         <toolbarbutton label="Confirm" image="/images/main.gif" visible="@bind(vm.button_confirm)"
+				  onClick="@command('on_confirm')"
+		          style="color:#666666;font-size:12px;" 		       
+		          tooltiptext="Click To Confirm Check."/>
+		          		          		            																																	            				            		     	             	   														         	   															
+			</hlayout>	
+			</toolbar>		
+	    </north>
+	    
+		<center>	
+			<vlayout vflex="1" hflex="1" spacing="4px">	 
+	
+			   <listbox vflex="1" hflex="1" sizedByContent="true" span='2' id="list_item"
+			   checkmark="true" multiple="true"
+				model="@load(vm.model_list_scrap)"
+				selectedItem="@bind(vm.select_scrap)"
+				onSelect="@command('select_scrap')">
+					<listhead sizable="true">
+					    <listheader  align="center" hflex="min"/>
+					    <listheader label="#"  align="center" hflex="min"/>
+					    <listheader label="ID"  align="center" hflex="min"/>
+						<listheader label="Scrap Date"  align="center" />
+						<listheader label="Factory"  align="center" hflex="min"/>
+						<listheader label="Product Group"  align="center" hflex="min"/>
+						<listheader label="Process"  align="center" hflex="min"/>
+						<listheader label="Mat'l Type"  align="center" hflex="min"/>
+						<listheader label="Scrap Type"  align="center" hflex="min"/>
+						<listheader label="Remark"  align="center" hflex="min" maxlength="50"/>
+						<listheader label="Quatity"  align="center" hflex="min"/>
+						<listheader label="Unit"  align="center" hflex="min"/>
+						<listheader label="Weight(Kgs.)"  align="center" hflex="min"/>	
+						<listheader label="Confirm Weight(Kgs.)"  align="center" hflex="min"/>
+						<listheader label="Status"  align="center" width="100px"/>
+						<listheader label="Last Update"  align="center" hflex="min"/>	
+						<listheader label="Update By"  align="center" hflex="min"/>						
+					</listhead>
+					
+					<template name="model" var="item">
+					<listitem>
+					    <listcell ></listcell>
+						<listcell label="@load(item.row_number)"></listcell>
+						<listcell label="@load(item.id)"></listcell>
+						<listcell label="@load(item.scrap_date)" ></listcell>
+						<listcell label="@load(item.fac_name)" style="text-align:left;color:#333333;"></listcell>
+						<listcell label="@load(item.pd_group_name)" style="text-align:left;color:#333333;"></listcell>
+						<listcell label="@load(item.process_name)" style="text-align:left;color:#333333;"></listcell>		
+						<listcell label="@load(item.mattype_name)" style="text-align:left;color:#333333;"></listcell>
+						<listcell label="@load(item.scraptype_name)" style="text-align:left;color:#333333;"></listcell>
+						<listcell label="@load(item.scrap_remark)" style="text-align:left;color:#333333;" tooltiptext="@load(item.scrap_remark)"></listcell>
+						<listcell label="@load(item.scrap_Quatity)" style="text-align:right;color:#333333;"></listcell>
+						<listcell label="@load(item.scp_unit_name)" style="text-align:left;color:#333333;"></listcell>
+						<listcell label="@load(item.scrap_Weight)" style="text-align:right;color:#333333;"></listcell>	
+						<listcell ><doublebox value="@bind(item.conform_Weight)" width="99%" style="text-align:right;color:#333333;"/></listcell>	
+						<listcell label="@load(item.status_name2)" image="@load(item.status_name)" style="text-align:left;color:#333333;"></listcell>						
+						<listcell label="@load(item.update_date)" style="text-align:left;color:#333333;"></listcell>
+						<listcell label="@load(item.update_name)" style="text-align:left;color:#333333;"></listcell>					
+					</listitem>
+					</template>
+					 
+				</listbox>
+
+			</vlayout>			   
+		</center>   
+		 				
+		</borderlayout> 	
+		     
+</zk>

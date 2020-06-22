@@ -1,0 +1,115 @@
+<?page title="SUS Evaluation" contentType="text/html;charset=UTF-8"?>
+<zk>
+		<borderlayout vflex="1" hflex="1"
+		apply="org.zkoss.bind.BindComposer" 
+		viewModel="@id('vm') @init('view.view_906_scap_view')"
+		validationMessages="@id('vmsgs')">
+		
+		<north>
+		 	<toolbar>
+			<hlayout spacing="2px">						               	            				      
+		    		     
+		         <toolbarbutton label="DATE" style="color:#666666;font-size:12px;" disabled="false"/>	
+		         <datebox width="110px" value="@bind(vm.startDate)" format='dd-MM-yyyy' readonly="true" tooltiptext="Select Start Date."/>		            				            				           		           
+		         <datebox width="110px" value="@bind(vm.endDate)" format='dd-MM-yyyy' readonly="true" tooltiptext="Select End Date."/>
+		         
+		         <toolbarbutton label="Factory" style="color:#666666;font-size:12px;" disabled="false"/>		          
+		         <combobox width="120px" readonly="true" model="@load(vm.model_list_fac)" 
+					        selectedItem="@bind(vm.select_fac)"
+							value="@load(vm.select_fac_name) @bind(vm.select_fac_name)"	
+							onSelect="@command('change_factory')"	
+							placeholder="N/A">
+							<template name="model">
+								<comboitem label="@load(each.fac_name)" value="@load(each.fac_id)" />
+							</template>
+				 </combobox>	   
+		         
+		         <toolbarbutton label="ProductGroup" style="color:#666666;font-size:12px;" disabled="false"/>
+		         <combobox width="120px" readonly="true" model="@load(vm.model_list_itemGroup)" 
+					        selectedItem="@bind(vm.select_itemGroup)"
+							value="@load(vm.select_itemGroup_name) @bind(vm.select_itemGroup_name)"								
+							placeholder="N/A"
+							onSelect="@command('change_product_group')"	>
+							<template name="model">
+								<comboitem label="@load(each.item_product_group)" value="@load(each.item_product_group)" />
+							</template>
+				</combobox>	   
+							
+		         <toolbarbutton label="Preview" image="/images/zoom.png" 
+		         style="color:#666666;font-size:12px;" 
+		         onClick="@command('load_scrap')"
+		         tooltiptext="Click To View Data."/>	
+		         
+		         <toolbarbutton label="Excel" image="/images/file_extension_xls.png" 
+				  onClick="@command('exportListboxToExcel')"
+		          style="color:#666666;font-size:12px;" 		       
+		          tooltiptext="Click To Export To Excel File."/>	    
+		            																																	            				            		     	             	   														         	   															
+			</hlayout>	
+			</toolbar>		
+	    </north>
+	    
+		<center>	
+			<vlayout vflex="1" hflex="1" spacing="4px">	 
+	
+			   <listbox vflex="1" hflex="1" sizedByContent="true" span='2' id="list_item"
+				model="@load(vm.model_list_scrap)"
+				selectedItem="@bind(vm.select_scrap)">
+					<listhead sizable="true">
+					    <listheader  align="center" hflex="min"/>
+					    <listheader label="#"  align="center" hflex="min"/>
+					    <listheader label="ID"  align="center" hflex="min"/>
+						<listheader label="Scrap Date"  align="center" />
+						<listheader label="Factory"  align="center" hflex="min"/>
+						<listheader label="Product Group"  align="center" hflex="min"/>
+						<listheader label="Process"  align="center" hflex="min"/>
+						<listheader label="Mat'l Type"  align="center" hflex="min"/>
+						<listheader label="Scrap Type"  align="center" hflex="min"/>
+						<listheader label="Remark"  align="center" hflex="min" maxlength="50" />
+						<listheader label="Quatity"  align="center" hflex="min"/>
+						<listheader label="Unit"  align="center" hflex="min"/>
+						<listheader label="Weight(Kgs.)"  align="center" hflex="min"/>	
+						<listheader label="Confirm Weight(Kgs.)"  align="center" hflex="min"/>
+						<listheader label="Status"  align="center" width="100px"/>
+						<listheader label="Create Date"  align="center" hflex="min"/>	
+						<listheader label="Create By"  align="center" hflex="min"/>	
+						<listheader label="Update Date"  align="center" hflex="min"/>	
+						<listheader label="Update By"  align="center" hflex="min"/>	
+						<listheader label="Confirm Date"  align="center" hflex="min"/>	
+						<listheader label="Confirm By"  align="center" hflex="min"/>						
+					</listhead>
+					
+					<template name="model" var="item">
+					<listitem>
+					    <listcell ></listcell>
+						<listcell label="@load(item.row_number)"></listcell>
+						<listcell label="@load(item.id)"></listcell>
+						<listcell label="@load(item.scrap_date)" ></listcell>
+						<listcell label="@load(item.fac_name)" style="text-align:left;color:#333333;"></listcell>
+						<listcell label="@load(item.pd_group_name)" style="text-align:left;color:#333333;"></listcell>
+						<listcell label="@load(item.process_name)" style="text-align:left;color:#333333;"></listcell>		
+						<listcell label="@load(item.mattype_name)" style="text-align:left;color:#333333;"></listcell>
+						<listcell label="@load(item.scraptype_name)" style="text-align:left;color:#333333;"></listcell>
+						<listcell label="@load(item.scrap_remark)" style="text-align:left;color:#333333;" tooltiptext="@load(item.scrap_remark)"></listcell>
+						<listcell label="@load(item.scrap_Quatity)" style="text-align:right;color:#333333;"></listcell>
+						<listcell label="@load(item.scp_unit_name)" style="text-align:left;color:#333333;"></listcell>
+						<listcell label="@load(item.scrap_Weight)" style="text-align:right;color:#333333;"></listcell>	
+						<listcell label="@load(item.conform_Weight)" style="text-align:right;color:#333333;"></listcell>
+						<listcell label="@load(item.status_name2)" image="@load(item.status_name)" style="text-align:left;color:#333333;"></listcell>	
+						<listcell label="@load(item.create_date)" style="text-align:left;color:#333333;"></listcell>
+						<listcell label="@load(item.create_name)" style="text-align:left;color:#333333;"></listcell>					
+						<listcell label="@load(item.update_date)" style="text-align:left;color:#333333;"></listcell>
+						<listcell label="@load(item.update_name)" style="text-align:left;color:#333333;"></listcell>
+						<listcell label="@load(item.confirm_date)" style="text-align:left;color:#333333;"></listcell>
+						<listcell label="@load(item.confirm_name)" style="text-align:left;color:#333333;"></listcell>					
+					</listitem>
+					</template>
+					 
+				</listbox>
+
+			</vlayout>			   
+		</center>   
+		 				
+		</borderlayout> 	
+		     
+</zk>

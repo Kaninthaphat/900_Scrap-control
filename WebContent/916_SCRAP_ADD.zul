@@ -1,0 +1,228 @@
+<?page title="SUS Scrap Control" contentType="text/html;charset=UTF-8"?>
+<zk>
+		<borderlayout vflex="1" hflex="1"
+		apply="org.zkoss.bind.BindComposer" 
+		viewModel="@id('vm') @init('view.view_916_SCRAP_ADD')"
+		validationMessages="@id('vmsgs')">
+		
+		<north>		
+			<toolbar>
+			<hlayout spacing="1px">						               	            				      
+		    		     						         
+		         <toolbarbutton label="DATE" style="color:#666666;font-size:12px;" disabled="false"/>	
+		         <datebox width="110px" value="@bind(vm.startDate)" format='dd-MM-yyyy' readonly="true" tooltiptext="Select Start Date."/>		            		  		           
+		         <toolbarbutton label="-" style="color:#666666;font-size:12px;" disabled="false"/>
+		         <datebox width="110px" value="@bind(vm.endDate)" format='dd-MM-yyyy' readonly="true" tooltiptext="Select End Date."/>
+		         
+		         <toolbarbutton label="Factory" style="color:#666666;font-size:12px;" disabled="false"/>
+		         <combobox width="120px" readonly="true" model="@load(vm.model_list_fac2)" 
+					        selectedItem="@bind(vm.select_fac2)"
+							value="@load(vm.select_fac_name2) @bind(vm.select_fac_name2)"	
+							onSelect="@command('change_factory2')"	
+							placeholder="SELECT">
+							<template name="model">
+								<comboitem label="@load(each.fac_name)" value="@load(each.fac_id)" />
+							</template>
+				</combobox>	   
+				<toolbarbutton label="ProductGroup" style="color:#666666;font-size:12px;" disabled="false"/>
+				<combobox width="140px" readonly="true" model="@load(vm.model_list_itemGroup2)" 
+					        selectedItem="@bind(vm.select_itemGroup2)"
+							value="@load(vm.select_itemGroup_name2) @bind(vm.select_itemGroup_name2)"	
+							onSelect="@command('change_product_group2')"	
+							placeholder="SELECT">
+							<template name="model">
+								<comboitem label="@load(each.item_product_group)" value="@load(each.item_product_group)" />
+							</template>
+				</combobox>	   
+											
+		         <toolbarbutton label="Preview" image="/images/zoom.png" 
+		         style="color:#666666;font-size:12px;" 
+		         onClick="@command('load_scrap')"
+		         tooltiptext="Click To View Data."/>
+		         
+		         <toolbarbutton label="Excel" image="/images/file_extension_xls.png" 
+				  onClick="@command('onCallExcel')"
+		          style="color:#666666;font-size:12px;" 		       
+		          tooltiptext="Click To Export To Excel File."/>	
+		         
+		         <toolbarbutton label="Save" image="/images/main.gif" 
+		         style="color:#666666;font-size:12px;" 
+		         onClick="@command('call_insert')" visible="@bind(vm.view_update)"
+		         tooltiptext="Click To Save Form."/>	
+		         
+		         <toolbarbutton label="Update" image="/images/main.gif" 
+		         style="color:#666666;font-size:12px;" 
+		         onClick="@command('call_update')"  visible="@bind(vm.view_print)"
+		         tooltiptext="Click To Update Form."/>	
+		        
+		         <toolbarbutton label="Print" image="/images/printer_empty.png" 
+		         style="color:#666666;font-size:12px;" 
+		         onClick="@command('load_excel')" visible="@bind(vm.view_print)"
+		         tooltiptext="Click To Print Form."/>
+		        
+		         <toolbarbutton label="Cancel" image="/images/del.gif" 
+		         style="color:#666666;font-size:12px;" 
+		         onClick="@command('on_cancel')" visible="@bind(vm.view_print)"
+		         tooltiptext="Click To Cancel Form."/>	 
+		         
+		         	    
+		            																																	            				            		     	             	   														         	   															
+			</hlayout>	
+			</toolbar>	     
+		
+	    </north>
+		<center>	
+		
+			<vlayout vflex="1" hflex="1" spacing="2px">	 
+			  								
+					<grid height="75px" hflex="1">
+					<columns sizable="true">
+						<column align="right" width="55px"/>
+						<column align="left" width="190px"/>
+						<column align="right" width="100px"/>
+						<column align="left" width="200px"/>	
+						<column align="right" width="110px"/>
+						<column align="left" width="170px"/>	
+						<column align="right" width="100px"/>
+						<column align="left"/>			
+					</columns>
+					
+					<rows>
+						
+						<row>	
+						    <label value="*Date :" style="color:#CC3333;"></label>
+							<datebox width="87%" value="@bind(vm.scrap_date_d)" format='dd-MM-yyyy' readonly="true" />		
+		                    
+		                    <label value="*Factory :" style="color:#CC3333;"></label>
+		                    <combobox width="99%" readonly="true" model="@load(vm.model_list_fac)" 
+					        selectedItem="@bind(vm.select_fac)"
+							value="@load(vm.select_fac_name) @bind(vm.select_fac_name)"	
+							onSelect="@command('change_factory')"	
+							placeholder="SELECT">
+							<template name="model">
+								<comboitem label="@load(each.fac_name)" value="@load(each.fac_id)" />
+							</template>
+							</combobox>	   
+		                    
+		                    <label value="*Product Group :" style="color:#CC3333;"></label>
+		                    <combobox width="99%" readonly="true" model="@load(vm.model_list_itemGroup)" 
+					        selectedItem="@bind(vm.select_itemGroup)"
+							value="@load(vm.select_itemGroup_name) @bind(vm.select_itemGroup_name)"	
+							onSelect="@command('change_product_group')"	
+							placeholder="SELECT">
+							<template name="model">
+								<comboitem label="@load(each.item_product_group)" value="@load(each.item_product_group)" />
+							</template>
+							</combobox>	
+							
+							
+							<label value="*Scrap Type :" style="color:#CC3333;"></label>
+							<combobox width="99%" readonly="true" model="@load(vm.model_list_scptype)" 
+						    selectedItem="@bind(vm.select_scptype)"
+							value="@load(vm.select_scptype_name) @bind(vm.select_scptype_name)"
+							placeholder="SELECT" onSelect="@command('onselect_scraptype')">
+									<template name="model">
+										<comboitem label="@load(each.c_Name)" value="@load(each.c_Id)" />
+									</template>
+							</combobox>	  
+														
+						</row>
+						<row></row>
+						<row></row>
+						<row></row>
+						
+						<row>
+						    
+							<label value="Quatity :"></label>
+							<hlayout vflex="1" hflex="1">
+								<decimalbox value="@bind(vm.scrap_Quatity)" width="70px" style="text-align:right;font-size:15px;"></decimalbox>
+								<combobox width="80px" readonly="true" model="@load(vm.model_list_unit)" 
+							    selectedItem="@bind(vm.select_unit)"
+							    value="@load(vm.select_unit_name) @bind(vm.select_unit_name)"
+							    placeholder="SELECT" onSelect="@command('onselect_unit')">
+										<template name="model">
+											<comboitem label="@load(each.c_Name)" value="@load(each.c_Id)" 
+											description="@load(each.c_Desc)"/>
+										</template>
+								</combobox>	   
+							</hlayout>
+														
+							<label value="*Weight(Kgs.) :" style="color:#CC3333;"></label>
+							<hlayout vflex="1" hflex="1">
+								<decimalbox value="@bind(vm.scrap_Weight)" width="70px" 
+								style="text-align:right;font-size:15px;">
+								</decimalbox>
+								<label value="(นน.ไม่เกิน 15 kg./ถุง)" width="100%" style="text-align:left;color:#CC3333;"></label>
+							</hlayout>
+							
+							<label value="Remark :"></label>
+							<textbox value="@bind(vm.scrap_remark)" width="99%"></textbox>
+							<label></label>
+							<label value="(ลงข้อมูล ที่เป็น  * ให้ครบ )" width="100%" style="text-align:left;color:#CC3333;"></label>
+						</row>
+						
+						
+					</rows>
+				</grid>
+			   
+				
+			   <listbox vflex="1" hflex="1" sizedByContent="true" span='2' id="list_item"
+			    checkmark="true" multiple="true"
+				model="@load(vm.model_list_scrap)"
+				selectedItem="@bind(vm.select_scrap)"
+				onSelect="@command('on_select_scrapform')">
+					<listhead sizable="true">
+					    <listheader  align="center" hflex="min"/>
+					    <listheader label="#"  align="center" hflex="min"/>
+					    <listheader label="ID"  align="center" hflex="min"/>
+						<listheader label="Scrap Date"  align="center" maxlength="12"/>
+						<listheader label="Factory"  align="center" hflex="min"/>
+						<listheader label="Product Group"  align="center" hflex="min"/>
+						<listheader label="Scrap Type"  align="center" hflex="min"/>
+						<listheader label="Remark"  align="center" hflex="min" maxlength="50"/>
+						<listheader label="Quatity"  align="center" hflex="min"/>
+						<listheader label="Unit"  align="center" hflex="min"/>
+						<listheader label="Weight(Kgs.)"  align="center" hflex="min"/>	
+						<listheader label="Status"  align="center" width="100px"/>
+						<listheader label="Create Date"  align="center" hflex="min" maxlength="18"/>	
+						<listheader label="Create By"  align="center" hflex="min"/>	
+						<listheader label="Last Update"  align="center" hflex="min"/>	
+						<listheader label="Update By"  align="center" hflex="min"/>						
+					</listhead>
+					
+					<template name="model" var="item">
+					<listitem>
+					    <listcell ></listcell>
+						<listcell label="@load(item.row_number)"></listcell>
+						<listcell label="@load(item.id)"></listcell>
+						<listcell label="@load(item.scrap_date)"></listcell>
+						<listcell label="@load(item.fac_name)" style="text-align:left;color:#333333;"></listcell>
+						<listcell label="@load(item.pd_group_name)" style="text-align:left;color:#333333;"></listcell>
+						<listcell label="@load(item.scraptype_name)" style="text-align:left;color:#333333;"></listcell>
+						<listcell label="@load(item.scrap_remark)" style="text-align:left;color:#333333;" tooltiptext="@load(item.scrap_remark)"></listcell>
+						<listcell label="@load(item.scrap_Quatity)" style="text-align:right;color:#333333;"></listcell>
+						<listcell label="@load(item.scp_unit_name)" style="text-align:left;color:#333333;"></listcell>
+						<listcell label="@load(item.scrap_Weight)" style="text-align:right;color:#333333;"></listcell>	
+						<listcell label="@load(item.status_name2)" image="@load(item.status_name)" style="text-align:left;color:#333333;"></listcell>												
+						<listcell label="@load(item.create_date)" style="text-align:left;color:#333333;"></listcell>
+						<listcell label="@load(item.create_name)" style="text-align:left;color:#333333;"></listcell>	
+						<listcell label="@load(item.update_date)" style="text-align:left;color:#333333;"></listcell>
+						<listcell label="@load(item.update_name)" style="text-align:left;color:#333333;" ></listcell>					
+					</listitem>
+					</template>
+					 
+				</listbox>
+
+			   <spreadsheet visible="false"
+				id="Spreadsheet" 
+		        showFormulabar="false"
+		        showToolbar ="false"
+		        showSheetbar="false"
+		        showContextMenu="false" /> 	
+			      			    
+			</vlayout>			   
+		</center>   
+		 				
+		</borderlayout> 	
+		     
+</zk>

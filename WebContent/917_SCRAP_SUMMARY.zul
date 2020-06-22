@@ -1,0 +1,159 @@
+<?page title="SUS Evaluation" contentType="text/html;charset=UTF-8"?>
+<zk>
+		<borderlayout vflex="1" hflex="1"
+		apply="org.zkoss.bind.BindComposer" 
+		viewModel="@id('vm') @init('view.view_917_scrap_summary')"
+		validationMessages="@id('vmsgs')">
+		
+		<north>
+		 	<toolbar>
+			<hlayout spacing="2px">						               	            				      
+		    	
+			     
+		         <toolbarbutton label="Scrap Type" style="color:#666666;font-size:12px;" disabled="false"/>		          
+		         <combobox width="120px" readonly="true" model="@load(vm.model_list_sc_type)" 
+					        selectedItem="@bind(vm.select_sc_type)"
+							value="@load(vm.select_sc_type_name) @bind(vm.select_sc_type_name)"	
+							onSelect="@command('change_sc_type')"	
+							placeholder="Select...">
+							<template name="model">
+								<comboitem label="@load(each.sc_type_name)" value="@load(each.sc_type_num)" />
+							</template>
+				 </combobox>	   
+		         	   
+							
+		         <toolbarbutton label="Preview" image="/images/zoom.png" 
+		         style="color:#666666;font-size:12px;" 
+		         onClick="@command('load_scrap')"
+		         tooltiptext="Click To View Data."/>	
+		         
+		         <toolbarbutton label="Excel" image="/images/file_extension_xls.png" 
+				  onClick="@command('onCallExcel')"
+		          style="color:#666666;font-size:12px;" 		       
+		          tooltiptext="Click To Export To Excel File."/>
+		         		         		      		         
+		         <toolbarbutton label="Sale Scrap" image="/images/main.gif" 
+		         style="color:#666666;font-size:12px;" 
+		         onClick="@command('call_insert')" visible="@bind(vm.view_update)"
+		         tooltiptext="Click To Save Form."/>
+		            																																	            				            		     	             	   														         	   															
+			</hlayout>	
+			</toolbar>		
+	    </north>
+	    
+		<center>	
+			<vlayout vflex="1" hflex="1" spacing="4px">	 
+			   
+			   
+			   <grid height="38px" hflex="1">
+					<columns sizable="true">
+						<column align="right" width="73px"/>
+						<column align="left" width="190px"/>
+						<column align="right" width="100px"/>
+						<column align="left" width="200px"/>	
+						<column align="right" width="110px"/>
+						<column align="left" width="170px"/>	
+						<column align="right" width="100px"/>
+						<column align="left"/>			
+					</columns>
+					
+					<rows>
+						
+						<row>	
+						    <label value="*Date :" style="color:#CC3333;"></label>
+							<datebox width="87%" value="@bind(vm.scrap_date_d)" format='dd-MM-yyyy' readonly="true" />		
+		                    
+		                    <label value="*Scrap Type :" style="color:#CC3333;"></label>
+		                    <combobox width="99%" readonly="true" model="@load(vm.model_list_sc_type)" 
+					        selectedItem="@bind(vm.select_sc_type)"
+							value="@load(vm.select_sc_type_name) @bind(vm.select_sc_type_name)"	
+							placeholder="SELECT">
+							<template name="model">
+								<comboitem label="@load(each.sc_type_name)" value="@load(each.sc_type_num)" />
+							</template>
+							</combobox>	   
+		                    
+		                    <label value="*Type BOI :" style="color:#CC3333;"></label>
+							<hlayout vflex="1" hflex="1">
+								<combobox width="155px" readonly="true" model="@load(vm.model_list_typeboi)" 
+							    selectedItem="@bind(vm.select_typeboi)"
+							    value="@load(vm.select_typeboi_name) @bind(vm.select_typeboi_name)"
+							    placeholder="SELECT" onSelect="@command('onselect_typeboi')">
+										<template name="model">
+											<comboitem label="@load(each.c_Name)" value="@load(each.c_Id)"/>
+										</template>
+								</combobox>	   
+							</hlayout>
+							
+							
+							<label value="*Weight(Kg.) :" style="color:#CC3333;"></label>
+							<hlayout vflex="1" hflex="1">
+								<decimalbox value="@bind(vm.scrap_sale_weight)" width="185px" 
+								style="text-align:right;font-size:15px;">
+								</decimalbox>
+							</hlayout>
+														
+						</row>
+						<row></row>
+						<row></row>
+						<row></row>
+						
+					</rows>
+				</grid>
+			   
+			   
+			   <listbox vflex="1" hflex="1" sizedByContent="true" span='2' id="list_item"
+				model="@load(vm.model_list_scrap)"
+				selectedItem="@bind(vm.select_scrap)">
+					<auxhead>
+			            <auxheader colspan="3" label="Detail Scrap" align="center" style="color:#FFFFFF;background-color:#696969"/>
+			            <auxheader colspan="2" label="BOI (Kg.)" align="center" style="color:#FFFFFF;background-color:#cc0000"/>
+			            <auxheader colspan="2" label="NON BOI (Kg.)" align="center" style="color:#FFFFFF;background-color:#0099ff"/>
+			            <auxheader colspan="2" label="TOTAL (Kg.)" align="center" style="color:#000000;background-color:#FFD700"/>
+		            </auxhead>
+					<listhead sizable="true">
+					    <listheader label="#"  align="center" width="45px"/>
+						<listheader label="Scrap Type"  align="center" width="200px"/>
+						<listheader label="Status"  align="center" width="150px"/>
+						
+						<listheader label="PD"  align="center" width="120px"/>
+						<listheader label="SC"  align="center" width="120px"/>
+						
+						<listheader label="PD"  align="center" width="120px"/>
+						<listheader label="SC"  align="center" width="120px"/>
+						
+						<listheader label="PD"  align="center" width="120px"/>
+						<listheader label="SC"  align="center" width="120px"/>
+					</listhead>
+					
+					<template name="model" var="item">
+					<listitem>
+						<listcell label="@load(item.row_number)"></listcell>
+						<listcell label="@load(item.sc_big_type)" style="text-align:left;color:#333333;"></listcell>
+						<listcell label="@load(item.scrap_typeboi_name)" style="@load(item.styletype)"></listcell>
+						
+						<listcell label="@load(item.p_str_qty_boi)" style="@load(item.color_num)"></listcell>
+						<listcell label="@load(item.str_qty_boi)" style="@load(item.color_num)"></listcell>
+						
+						<listcell label="@load(item.p_str_qty_non_boi)" style="@load(item.color_num)"></listcell>
+						<listcell label="@load(item.str_qty_non_boi)" style="@load(item.color_num)"></listcell>
+						
+						<listcell label="@load(item.p_str_qty_total)" style="@load(item.color_num)"></listcell>
+						<listcell label="@load(item.str_qty_total)" style="@load(item.color_num)"></listcell>
+						
+						
+						
+						
+					</listitem>
+					</template>
+					
+					 
+				</listbox>
+
+
+			</vlayout>			   
+		</center>   
+		 				
+		</borderlayout> 	
+		     
+</zk>
